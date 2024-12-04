@@ -2,7 +2,6 @@ use std::fs;
 
 fn get_input_vectors(file_path: &str) -> (Vec<i32>, Vec<i32>){
     // Read input file 
-    let file_path = "./input.txt";
     let contents = fs::read_to_string(file_path)
         .expect("Should have been able to read the file");
 
@@ -28,25 +27,30 @@ fn get_input_vectors(file_path: &str) -> (Vec<i32>, Vec<i32>){
     return (left, right);
 }
 
+
+fn get_similarity_score(left: &Vec<i32>, right: &Vec<i32>) -> i32{
+    let mut score = 0; 
+
+    for item in left.iter(){
+        let count = right.iter().filter(|v| *v == item).count() as i32;
+        score += item * count;
+    }
+
+    score
+}
+
 fn main() {
     // Create to vectors to be sorted 
     let (left, right )= get_input_vectors("./input.txt");
 
+    // Part 1: 
     // Calculate the differences!
     let dif: i32 = left.iter().zip(right.iter()).map(|(l, r)| (l - r).abs()).sum();
     println!("Part 1 sum: {dif}");
 
 
     // Part 2: 
-
-
-
-
-
-
-
-
-
-
-
+    // Calculate similarity
+    let similarity = get_similarity_score(&left, &right);
+    println!("Part 2 similarity: {similarity}");
 }
