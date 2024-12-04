@@ -7,6 +7,7 @@ My Advent of Code 2024 solutions solved with Rust 🎄 🦀
 | Day | Title                              | Link to notes 🗒️                | Stars   |
 | --- | ---------------------------------- | ------------------------------- | ------- |
 | 1   | Day 1: Historian Hysteria                | [Read notes here](https://github.com/KjetilIN/advent-of-code-2024/blob/main/day_01/notes.md) | ⭐⭐  |
+| 2   | Day 2: Red-Nosed Reports               | [Read notes here](https://github.com/KjetilIN/advent-of-code-2024/blob/main/day_02/notes.md) | ⭐⭐  |
 
 
 
