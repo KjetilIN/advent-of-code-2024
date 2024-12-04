@@ -20,12 +20,17 @@ Link to complete description: https://adventofcode.com/2024/day/04
 
 ## Approach/Algorithm
 
+### Part 1 
+- Look for `X` instead of the whole xmas word in each direction
+- Only when found we search in the possible directions, if feasible
+- Use `rayon` to parallelize the process
+
 ## Result
 
 ### Part 1
 
 ```text
-real    0m0,490s
-user    0m0,383s
-sys     0m0,163s
+real    0m0,091s
+user    0m0,092s
+sys     0m0,019s
 ```
