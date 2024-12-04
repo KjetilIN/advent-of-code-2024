@@ -24,14 +24,25 @@ It work the same way as compilers; first we specify the tokens we are interested
 - Created the state machine for handling input
 - Validated each condition by creating test cases that test state machine 
 
+### Part 2
+- Added extra state for enabled
+- Check if enabled before doing multiplication 
+- If unknown character => check if it's '`do()` or `don't()`, and toggle enabled state appropriately 
+
 ## Result
 
 ### Part 1
 
 ```text
-real    0m0,280s
-user    0m0,181s
-sys     0m0,116s
+real    0m0,185s
+user    0m0,168s
+sys     0m0,017s
 ```
 
+### Part 2 
 
+```text
+real    0m0,185s
+user    0m0,163s
+sys     0m0,022s
+```

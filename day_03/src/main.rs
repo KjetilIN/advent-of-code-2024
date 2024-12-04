@@ -10,136 +10,155 @@ enum Token {
     Digit,
 }
 
+#[derive(Debug)]
+struct StateMachine {
+    // Keep track of the next token that is expected 
+    pub next_token: Token,
+    pub comma_found: bool,
+    pub first_digit_str: String,
+    pub second_digit_str: String,
+    enabled: bool,
+    pub multiplied_sum: i32,
+    pub is_part_2: bool
+}
+
+impl StateMachine {
+    fn new(is_part_2: bool) -> Self {
+        Self {
+            next_token: Token::M,
+            comma_found: false,
+            first_digit_str: String::new(),
+            second_digit_str: String::new(),
+            enabled: true,
+            multiplied_sum: 0,
+            is_part_2: is_part_2,
+        }
+    }
+
+    fn set_comma_found(&mut self){
+        self.next_token = Token::Digit;
+        self.comma_found = true; 
+    }
+
+    fn enable(&mut self){
+        self.enabled = true;
+    }
+
+    fn disable(&mut self){
+        self.enabled = false; 
+    }
+
+    fn is_ready_to_mul(&self) -> bool{
+        return (self.next_token == Token::RightParentheses || self.next_token == Token::Digit) && !self.second_digit_str.is_empty()
+    }
+
+    fn multiply(&mut self){
+        // Parse left and right numbers
+        let left_number = self.first_digit_str
+            .parse::<i32>()
+            .expect("could not parse left number");
+        let right_number = self.second_digit_str
+            .parse::<i32>()
+            .expect("could not parse left number");
+
+
+        // Add the multiplied sum
+        if self.is_part_2 {
+            // For part 2: only multiply and add if enabled
+            if self.enabled {
+                self.multiplied_sum += left_number * right_number;
+            }else{
+            }
+
+        } else {
+            // For part 1: do it anyways
+            self.multiplied_sum += left_number * right_number;
+        }
+    }
+
+    fn append_digit(&mut self, v:char){
+        if self.comma_found {
+            self.second_digit_str.push(v);
+        } else {
+            self.first_digit_str.push(v);
+        }
+    }
+
+    fn reset(&mut self){
+        self.next_token = Token::M;
+        self.comma_found = false;
+        self.first_digit_str = String::new();
+        self.second_digit_str = String::new();
+    }
+
+
+}
+
 fn find_and_mul(line: &str, is_part_2: bool) -> i32 {
-    // Keep track of the next statement
-    let mut next_token = Token::M;
-
-    // Keep track of first and second digit to be
-    let mut comma_found = false;
-    let mut first_digit_str = String::new();
-    let mut second_digit_str = String::new();
-
-    // Keep track if enabled (for part 2)
-    let mut enabled = true;
-
-    // Keep track of the sum
-    let mut multiplied_sum = 0;
+    // Create state machine 
+    let mut state_machine: StateMachine = StateMachine::new(is_part_2);
 
     for (i, char) in line.chars().enumerate() {
         match char {
             'm' => {
-                if next_token == Token::M {
-                    next_token = Token::U;
+                if state_machine.next_token == Token::M {
+                    state_machine.next_token = Token::U;
                 } else {
                     // Reset
-                    next_token = Token::M;
-                    first_digit_str = String::new();
-                    second_digit_str = String::new();
-                    comma_found = false;
+                    state_machine.reset();
                 }
             }
             'u' => {
-                if next_token == Token::U {
-                    next_token = Token::L;
+                if state_machine.next_token == Token::U {
+                    state_machine.next_token = Token::L;
                 } else {
                     // Reset
-                    next_token = Token::M;
-                    first_digit_str = String::new();
-                    second_digit_str = String::new();
-                    comma_found = false;
+                    state_machine.reset();
                 }
             }
             'l' => {
-                if next_token == Token::L {
-                    next_token = Token::LeftParentheses;
+                if state_machine.next_token == Token::L {
+                    state_machine.next_token = Token::LeftParentheses;
                 } else {
                     // Reset
-                    next_token = Token::M;
-                    first_digit_str = String::new();
-                    second_digit_str = String::new();
-                    comma_found = false;
+                    state_machine.reset();
                 }
             }
             '(' => {
-                if next_token == Token::LeftParentheses {
-                    next_token = Token::Digit;
+                if state_machine.next_token == Token::LeftParentheses {
+                    state_machine.next_token = Token::Digit;
                 } else {
                     // Reset
-                    next_token = Token::M;
-                    first_digit_str = String::new();
-                    second_digit_str = String::new();
-                    comma_found = false;
+                    state_machine.reset();
                 }
             }
             ',' => {
                 // Next token is either a digit and a comma
-                if next_token == Token::Digit && !comma_found {
-                    next_token = Token::Digit;
-                    comma_found = true;
+                if state_machine.next_token == Token::Digit && !state_machine.comma_found {
+                    state_machine.set_comma_found();
                 } else {
                     // Reset
-                    next_token = Token::M;
-                    first_digit_str = String::new();
-                    second_digit_str = String::new();
-                    comma_found = false;
+                    state_machine.reset();
                 }
             }
             ')' => {
-                if (next_token == Token::RightParentheses || next_token == Token::Digit)
-                    && !second_digit_str.is_empty()
-                {
-                    // Parse left and right numbers
-                    let left_number = first_digit_str
-                        .parse::<i32>()
-                        .expect("could not parse left number");
-                    let right_number = second_digit_str
-                        .parse::<i32>()
-                        .expect("could not parse left number");
-
-                    // Add the multiplied sum
-                    if is_part_2 {
-                        // For part 2: only multiply and add if enabled
-                        if enabled {
-                            multiplied_sum += left_number * right_number;
-                        }
-                    } else {
-                        // For part 1: do it anyways
-                        multiplied_sum += left_number * right_number;
-                    }
+                if state_machine.is_ready_to_mul(){
+                    state_machine.multiply();
                 }
-
                 // Reset
-                next_token = Token::M;
-                first_digit_str = String::new();
-                second_digit_str = String::new();
-                comma_found = false;
+                state_machine.reset();
             }
             v => {
-                // Next token is set to be a digit
-                // We also allow the next digit to be , or )
-                if next_token == Token::Digit {
-                    // If the char is digit add it to one of the numbers
-                    if v.is_ascii_digit() {
-                        if comma_found {
-                            second_digit_str.push(v);
-                        } else {
-                            first_digit_str.push(v);
-                        }
-                    } else {
-                        // There is some sort of unknown char
-                        // Reset
-                        next_token = Token::M;
-                        first_digit_str = String::new();
-                        second_digit_str = String::new();
-                        comma_found = false;
-                    }
-                } else if v == 'd' {
+                // Check if next token is a 
+                if v == 'd' {
                     // Check if is do()
                     if line.chars().nth(i + 1) == Some('o')
                         && line.chars().nth(i + 2) == Some('(')
                         && line.chars().nth(i + 3) == Some(')')
                     {
-                        enabled = true;
+                        state_machine.enable();
+                        state_machine.reset();
+                        continue;
                     }
 
                     // Check if is don't()
@@ -150,21 +169,26 @@ fn find_and_mul(line: &str, is_part_2: bool) -> i32 {
                         && line.chars().nth(i + 5) == Some('(')
                         && line.chars().nth(i + 6) == Some(')')
                     {
-                        enabled = false;
+                        state_machine.disable();
+                        state_machine.reset();
+                        continue;
                     }
-                } else {
-                    // There is some sort of unknown char
-                    // Reset
-                    next_token = Token::M;
-                    first_digit_str = String::new();
-                    second_digit_str = String::new();
-                    comma_found = false;
+                    
                 }
+                
+                // Check if the next item is a digit that we can append 
+                if v.is_ascii_digit() && state_machine.next_token == Token::Digit{
+                    state_machine.append_digit(v);
+                    continue;
+                }
+
+                // Reset
+                state_machine.reset();
             }
         }
     }
 
-    return multiplied_sum;
+    return state_machine.multiplied_sum;
 }
 
 fn part_1(file_path: &str) -> i32 {
@@ -185,8 +209,8 @@ fn main() {
     let mul_part_1 = part_1(&file_path);
     println!("Part 1: {mul_part_1}");
 
-    let mul_part_2 = part_2(file_path);
-    println!("Part 2: {mul_part_2}");
+    //let mul_part_2 = part_2(file_path);
+    //println!("Part 2: {mul_part_2}");
 }
 
 #[cfg(test)]
