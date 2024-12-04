@@ -12,8 +12,8 @@ enum Token{
 
 
 fn find_and_mul(line: &str) -> i32{
+    // Keep track of the next statement 
     let mut next_token = Token::M; 
-
 
     // Keep track of first and second digit to be 
     let mut comma_found = false;
@@ -74,7 +74,8 @@ fn find_and_mul(line: &str) -> i32{
                 }
             }, 
             ',' => {
-                if next_token == Token::Digit{
+                // Next token is either a digit and a comma
+                if next_token == Token::Digit && !comma_found {
                     next_token = Token::Digit;
                     comma_found = true;
                 }else{
@@ -91,6 +92,7 @@ fn find_and_mul(line: &str) -> i32{
                     // Use the given information to calculate the multiplications
                     println!("Left number: '{}', right number: '{}'", first_digit_str, second_digit_str);
 
+                    // Parse left and right numbers 
                     let left_number = first_digit_str.parse::<i32>().expect("could not parse left number");
                     let right_number = second_digit_str.parse::<i32>().expect("could not parse left number");
 
