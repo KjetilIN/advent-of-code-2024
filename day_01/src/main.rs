@@ -1,7 +1,6 @@
 use std::fs; 
 
-
-fn main() {
+fn get_input_vectors(file_path: &str) -> (Vec<i32>, Vec<i32>){
     // Read input file 
     let file_path = "./input.txt";
     let contents = fs::read_to_string(file_path)
@@ -26,10 +25,16 @@ fn main() {
     left.sort();
     right.sort();
 
+    return (left, right);
+}
+
+fn main() {
+    // Create to vectors to be sorted 
+    let (left, right )= get_input_vectors("./input.txt");
+
     // Calculate the differences!
     let dif: i32 = left.iter().zip(right.iter()).map(|(l, r)| (l - r).abs()).sum();
     println!("Part 1 sum: {dif}");
-
 
 
     // Part 2: 
