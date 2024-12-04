@@ -19,11 +19,8 @@ cd $day_folder
 # Create a notes.md file with Description, Input, Output, Approach, Learnings, Code Snippets, and Challenges Faced headings
 echo -e "# Day $day_number - Description\n" >> notes.md
 echo -e "Link to complete description: https://adventofcode.com/2024/day/$day_number" >> notes.md
-echo -e "## Input Description\n\n" >> notes.md
-echo -e "## Output Description\n\n" >> notes.md
 echo -e "## Approach/Algorithm\n\n" >> notes.md
-echo -e "## Learnings\n\n" >> notes.md
-echo -e "## Code Snippets\n\n" >> notes.md
+echo -e "## Result\n\n" >> notes.md
 
 # Print a message
 echo "New project for Day $day_number created in $day_folder. notes.md file created."
