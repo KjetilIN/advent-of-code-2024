@@ -13,6 +13,11 @@ Link to complete description: https://adventofcode.com/2024/day/2
 
 (Could have improved the solution by doing it in parallel)
 
+### Part 2
+- Check standard way, if not safe do extra check
+- Extra check by checking until there is a rule break. 
+    - If there are a rule break, remove this digit and test the standard way
+
 ## Result
 
 ### Part 1
@@ -23,4 +28,11 @@ user    0m0,064s
 sys     0m0,022s
 ```
 
+### Part 2
+
+```text
+real    0m0,453s
+user    0m0,327s
+sys     0m0,190s
+```text
 
