@@ -192,8 +192,8 @@ fn safe_line_count_with_rm_level(file_path: &str) -> i16 {
 
 fn main() {
     // Part 1
-    //let safe_lines = safe_line_count("./input.txt");
-    //println!("Part 1: {safe_lines}");
+    let safe_lines = safe_line_count("./input.txt");
+    println!("Part 1: {safe_lines}");
 
     // Part 2
     let safe_lines_with_rm = safe_line_count_with_rm_level("./input.txt");

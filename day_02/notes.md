@@ -31,8 +31,7 @@ sys     0m0,022s
 ### Part 2
 
 ```text
-real    0m0,453s
-user    0m0,327s
-sys     0m0,190s
-```text
-
+real    0m0,086s
+user    0m0,062s
+sys     0m0,024s
+```
