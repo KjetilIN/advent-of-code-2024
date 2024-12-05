@@ -10,6 +10,7 @@ My Advent of Code 2024 solutions solved with Rust 🎄 🦀
 | 2   | Day 2: Red-Nosed Reports               | [Read notes here](https://github.com/KjetilIN/advent-of-code-2024/blob/main/day_02/notes.md) | ⭐⭐  |
 | 3   | Day 3: Mull It Over               | [Read notes here](https://github.com/KjetilIN/advent-of-code-2024/blob/main/day_03/notes.md) | ⭐⭐  |
 | 4   | Day 4: Ceres Search               | [Read notes here](https://github.com/KjetilIN/advent-of-code-2024/blob/main/day_04/notes.md) | ⭐⭐  |
+| 5   | Day 5: Print Queue               | [Read notes here](https://github.com/KjetilIN/advent-of-code-2024/blob/main/day_05/notes.md) | ⭐  |
 
 
 
