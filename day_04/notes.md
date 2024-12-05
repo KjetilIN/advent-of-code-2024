@@ -25,6 +25,12 @@ Link to complete description: https://adventofcode.com/2024/day/04
 - Only when found we search in the possible directions, if feasible
 - Use `rayon` to parallelize the process
 
+### Part 2
+- Look for `A` character before checking the cross
+- Check if only `A`, if it is within the valid boundaries (must not be on the edge of the map)
+- Use `rayon` to check only the valid indexes where there is an `A`
+- Check if any of the valid combinations of a cross is present. If it is, increment the count
+
 ## Result
 
 ### Part 1
@@ -33,4 +39,12 @@ Link to complete description: https://adventofcode.com/2024/day/04
 real    0m0,091s
 user    0m0,092s
 sys     0m0,019s
+```
+
+### Part 2
+
+```text
+real    0m0,088s
+user    0m0,072s
+sys     0m0,028s
 ```
