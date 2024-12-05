@@ -119,11 +119,16 @@ fn repair_update(mut update: Vec<u16>, rules_map: &HashMap<u16, Vec<u16>>) -> u1
     // While not fixed 
     let (mut ok, mut key_index, mut value_index) = is_following_rules(&update, rules_map);
     while !ok && rules_map.contains_key(&update[key_index]) {
-        // Move the value item behind the key 
-        let value = update.remove(value_index);
-        update.insert(key_index, value);
+        // Ensure the key exists in the rules map
+        if let Some(_) = rules_map.get(&update[key_index]) {
+            // Swap the value behind the key
+            update.swap(key_index, value_index);
+        } else {
+            // If the key doesn't exist in the rules, return 0
+            return 0;
+        }
 
-        // Recheck if we have an error 
+        // Recheck the rules
         (ok, key_index, value_index) = is_following_rules(&update, rules_map);
     }
 
@@ -172,7 +177,6 @@ fn process_rules_part_2(rules_map: &HashMap<u16, Vec<u16>>, updates_list: &Vec<S
         if has_broken_rule{
             let mid_number = repair_update(update_numbs, rules_map);
             total_sum.fetch_add(mid_number, Ordering::Relaxed);
-            println!("Done rule: {i}");
         }
     });
 
@@ -186,9 +190,9 @@ fn main() {
     println!("Rules size: {}", rules.len());
     println!("Updates: {}\n", update_list.len());
 
-    //// Part 1 
-    //let total_sum_part_1 = process_rules_part_1(&rules, &update_list);
-    //println!("Part 1: {}", total_sum_part_1);
+    // Part 1 
+    let total_sum_part_1 = process_rules_part_1(&rules, &update_list);
+    println!("Part 1: {}", total_sum_part_1);
 
     // Part 2
     let total_sum_part_2 = process_rules_part_2(&rules, &update_list);

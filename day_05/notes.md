@@ -42,4 +42,14 @@ user    6m8,027s
 sys     0m0,285s
 ```
 
+There was some optimization done for the repairing of an update sequence
+- Instead of `remove` and then `insert`, I used `swap` which does the same, but much faster!
+- Early break on check if the key was not the sequence 
+
+Final best time: 
+```text
+real    0m0,089s
+user    0m0,235s
+sys     0m0,022s
+```
 
