@@ -177,11 +177,10 @@ fn part_2(content: String) -> u32 {
 fn main() {
     let file_path = "./input.txt";
     let content = fs::read_to_string(file_path).expect("could not read content");
-    // let xmas_count_part_1 = part_1(content.clone());
-
+    let xmas_count_part_1 = part_1(content.clone());
     let xmas_count_part_2 = part_2(content);
 
-    //println!("Part 1: {}", xmas_count_part_1);
+    println!("Part 1: {}", xmas_count_part_1);
     println!("Part 2: {}", xmas_count_part_2);
 }
 
