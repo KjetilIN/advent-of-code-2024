@@ -16,7 +16,7 @@ Identify instances of **X-MAS**, where two **MAS** substrings form the shape of 
 
 This part requires nested grid traversal and positional validation to detect overlapping and rotated patterns effectively. Parsing both conditions demands careful handling of boundaries and relative positions in the grid.
 
-Link to complete description: https://adventofcode.com/2024/day/04
+Link to complete description: https://adventofcode.com/2024/day/4
 
 ## Approach/Algorithm
 
