@@ -33,3 +33,13 @@ user    0m0,056s
 sys     0m0,022s
 ```
 
+### Part 2
+
+Before optimization: 
+```text
+real    2m6,008s
+user    6m8,027s
+sys     0m0,285s
+```
+
+
