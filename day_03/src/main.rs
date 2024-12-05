@@ -209,8 +209,8 @@ fn main() {
     let mul_part_1 = part_1(&file_path);
     println!("Part 1: {mul_part_1}");
 
-    //let mul_part_2 = part_2(file_path);
-    //println!("Part 2: {mul_part_2}");
+    let mul_part_2 = part_2(file_path);
+    println!("Part 2: {mul_part_2}");
 }
 
 #[cfg(test)]

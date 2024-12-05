@@ -141,6 +141,7 @@ fn is_safe_with_rm(numbers: &Vec<i16>) -> bool {
     true
 }
 
+#[allow(dead_code)]
 fn numbers_to_vec(line: &str) -> Vec<i16> {
     line.split_whitespace()
         .map(|v| v.parse::<i16>().expect("parse number in line error"))

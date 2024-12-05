@@ -1,4 +1,4 @@
-use std::{collections::HashMap, fs, ops::Index, sync::atomic::{AtomicU16, Ordering}};
+use std::{collections::HashMap, fs, sync::atomic::{AtomicU16, Ordering}};
 
 use rayon::iter::{IntoParallelIterator, ParallelIterator}; 
 
@@ -46,10 +46,12 @@ fn process_rules_part_1(rules_map: &HashMap<u16, Vec<u16>>, updates_list: &Vec<S
         // Rule to currently check
         let update_numbs: Vec<u16> = updates_list[i].split(",").map(|f| f.parse::<u16>().unwrap()).collect();
 
+        // Keep track of if the rule is broken and if a rule can be applied 
         let mut has_broken_rule = false; 
         let mut has_rule = false; 
 
-        for (i, key) in update_numbs.iter().enumerate(){
+        // Loop over the numbers to update
+        'update_numbs_loop: for (i, key) in update_numbs.iter().enumerate(){
             // Check only if number is in the vector 
             if update_numbs.contains(&key){
                 // If the key is in the Rule Hashmap, we know we need to check and evaluate it 
@@ -61,19 +63,21 @@ fn process_rules_part_1(rules_map: &HashMap<u16, Vec<u16>>, updates_list: &Vec<S
                         if values.contains(&update_numbs[j]){
                             // Exit early due to rule break 
                             has_broken_rule = true; 
-                            break; 
+                            break 'update_numbs_loop; 
                         }
                     }
-                    // Exit if rule break
-                    if has_broken_rule { break; }
 
-                    // No rule, break, i.e test all values 
-                    (i..update_numbs.len()).into_iter().for_each(|value_index|{
-                        let current_numb = &update_numbs[value_index];
-                        if values.contains(current_numb){
-                            has_rule = true; 
-                        }
-                    });
+                    // No rule break, i.e validate that a rule can be applied! 
+                    // If one rule can be applied we are ok!
+                    if !has_rule{
+                        (i..update_numbs.len()).into_iter().for_each(|value_index|{
+                            let current_numb = &update_numbs[value_index];
+                            if values.contains(current_numb){
+                                has_rule = true; 
+                            }
+                        });
+                    }
+                    
                 }
             }   
         }
@@ -150,8 +154,10 @@ fn process_rules_part_2(rules_map: &HashMap<u16, Vec<u16>>, updates_list: &Vec<S
     (0..updates_list.len()).into_par_iter().for_each(|i| {
         // Rule to currently check
         let update_numbs: Vec<u16> = updates_list[i].split(",").map(|f| f.parse::<u16>().unwrap()).collect();
-        let mut has_broken_rule = false; 
-        for (i, key) in update_numbs.iter().enumerate(){
+        
+        // Loop over the numbers to check  
+        let mut early_break = false; 
+        'numbers_loop: for (i, key) in update_numbs.iter().enumerate(){
             // Check only if number is in the vector 
             if update_numbs.contains(&key){
                 // If the key is in the Rule Hashmap, we know we need to check and evaluate it 
@@ -161,20 +167,18 @@ fn process_rules_part_2(rules_map: &HashMap<u16, Vec<u16>>, updates_list: &Vec<S
                     // If there is, we have a rule break, and can exit early 
                     for j in 0..i{
                         if values.contains(&update_numbs[j]){
-                            // Exit early due to rule break 
-                            has_broken_rule = true; 
-                            break; 
+                            // Exit early due to rule break
+                            early_break = true;  
+                            break 'numbers_loop; 
                         }
                     }
-                    // Exit if rule break
-                    if has_broken_rule { break; }
                 }
             }   
         }
 
         // If there is a broken rule, we repair it and return the middle number 
         // If neither is true, we return nothing 
-        if has_broken_rule{
+        if early_break{
             let mid_number = repair_update(update_numbs, rules_map);
             total_sum.fetch_add(mid_number, Ordering::Relaxed);
         }
