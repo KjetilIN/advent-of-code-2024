@@ -23,6 +23,15 @@ Link to complete description: https://adventofcode.com/2024/day/5
 - If there is a valid rule that can apply, then we add the middle number of the update string to the total sum
   - Only one valid rule is required to be found. We check all rule breaks before, so either the rule applies, or it doesn't. 
 
+### Part 2 
+- We only care about the broken update statements
+- Find a broken update statement and use the repair method
+  - It takes the sequence of numbers and returns the middle number of the repaired list
+  - It repairs by swapping the indexes of the key and value of a `Rule`, such that the rule is satisfied 
+  - It rechecks if the update is now correct for all rules
+  - Does this until the rule are fixed!
+- Sum all repaired middle numbers 
+
 ## Result
 
 ### Part 1
