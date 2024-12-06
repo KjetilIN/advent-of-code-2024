@@ -11,6 +11,7 @@ My Advent of Code 2024 solutions solved with Rust 🎄 🦀
 | 3   | Day 3: Mull It Over               | [Read notes here](https://github.com/KjetilIN/advent-of-code-2024/blob/main/day_03/notes.md) | ⭐⭐  |
 | 4   | Day 4: Ceres Search               | [Read notes here](https://github.com/KjetilIN/advent-of-code-2024/blob/main/day_04/notes.md) | ⭐⭐  |
 | 5   | Day 5: Print Queue               | [Read notes here](https://github.com/KjetilIN/advent-of-code-2024/blob/main/day_05/notes.md) | ⭐⭐  |
+| 6   | Day 6: Guard Gallivant               | [Read notes here](https://github.com/KjetilIN/advent-of-code-2024/blob/main/day_06/notes.md) | ⭐  |
 
 
 

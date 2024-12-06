@@ -1,4 +1,4 @@
-use std::{collections::HashSet, fs}; 
+use std::{char, collections::HashSet, fs}; 
 
 enum Direction {
     North,
@@ -9,7 +9,6 @@ enum Direction {
 
 impl Direction {
     fn right_turn(&self) -> Self{
-        println!("Right turn!");
         match &self {
             Direction::North => return Direction::East,
             Direction::West => return Direction::North,
@@ -41,27 +40,24 @@ fn next_index_out_of_bounds(rows:&usize, cols:&usize, current_guard_index: &usiz
     }
 }
 
-fn step(guard_index:&mut usize, cols:&usize, direction:&Direction){
+fn step(guard_index:&usize, cols:&usize, direction:&Direction) -> usize{
     match direction{
         Direction::North => {
-            *guard_index -= cols; 
+            return guard_index - cols; 
         },
         Direction::West => {
-            *guard_index -= 1; 
+            return guard_index - 1; 
         },
         Direction::East => {
-            *guard_index += 1; 
+            return guard_index + 1; 
         },
         Direction::South => {
-            *guard_index -= cols; 
+            return guard_index + cols; 
         },
     }
 }
 
-
-fn main() {
-
-    let file_path = "./test_1.txt";
+fn get_map(file_path: &str) -> (usize, usize, Vec<char>){
     let content = fs::read_to_string(file_path).expect("could not read file");
     let rows = content.lines().into_iter().count(); 
     let cols = content
@@ -70,30 +66,34 @@ fn main() {
         .map(|line| line.len())
         .expect("could not count columns");
 
-    println!("Map Size: {}x{}", rows, cols);
-
     // Collect all chars to iterate over 
     let chars: Vec<char> = content.replace("\n", "").chars().collect();
 
+    return (rows, cols, chars);
+}
+
+fn find_path(rows:&usize, cols:&usize, chars:&Vec<char>) -> usize{
     let mut positions:HashSet<u16> = HashSet::new();
 
     // First find the symbol 
     if let Some(mut guard_index) = &chars.clone().into_iter().position(|c| c == '^'){
-        println!("Symbol index is: {}", guard_index);
-        let guard_row = guard_index / rows; 
-        let guard_col = guard_index % cols; 
+        // Include the starting position 
+        positions.insert(guard_index as u16);
 
-        let mut current_direction = Direction::North;
-
-        println!("Map position is: ({},{})", guard_row, guard_col);
+        // Direction during the start is always north
+        let mut current_direction = Direction::North;        
 
         // While we can step in the given direction 
         while !next_index_out_of_bounds(&rows, &cols, &guard_index, &current_direction){
-            println!("Step!");
-            step(&mut guard_index, &cols, &current_direction);
-            positions.insert(guard_index as u16);
-            if chars[guard_index] == '#'{
+            // Check next step
+            let next_step: usize = step(&guard_index, &cols, &current_direction);
+            if chars[next_step] == '#'{
                 current_direction = current_direction.right_turn();
+            }else{
+                // Take a step
+                //println!("Step!");
+                guard_index = next_step;
+                positions.insert(next_step as u16);
             }
         }
 
@@ -101,6 +101,33 @@ fn main() {
         panic!("Puzzle input does not contain a starting guard!")
     }
 
-    let part_1 = positions.len();
-    println!("Part 1: {}", part_1);
+    // Return the positions visited  
+    positions.len()
+}
+
+
+
+
+fn main() {
+    let file_path = "./input.txt";
+    let (rows, cols, chars) = get_map(file_path);
+    let path_len = find_path(&rows, &cols, &chars);
+
+    // Part 1: 4988
+    println!("Part 1: {}", path_len);
+}
+
+
+#[cfg(test)]
+mod tests {
+    use crate::{find_path, get_map};
+
+    #[test]
+    fn test_part_1(){
+        let file_path = "./test_1.txt";
+        let (rows, cols, chars) = get_map(file_path);
+        let path_len = find_path(&rows, &cols, &chars);
+        assert_eq!(path_len, 41);
+    }
+
 }
